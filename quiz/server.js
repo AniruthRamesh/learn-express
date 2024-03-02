@@ -51,6 +51,25 @@ app.post('/write/adduser', (req, res) => {
   res.send('done');
 })
 
+app.get('/read/username/:input',addMsgToRequest, (req, res) =>{
+  const usern = req.params.input;
+  try{
+    console.log(usern)
+    const userObj = req.users.filter((user) => {
+      return user.username === usern
+    })
+    if(userObj.length === 0) res.send({error : `There is no user with username ${usern}`});
+    else res.json(userObj)
+
+  }
+  catch(error){
+    res.send({
+      error: {message: 'users not found', status: 404}
+  });
+  }
+})
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
